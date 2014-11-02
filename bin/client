@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby 
+
+require "rubygems"
+require "bundler"
+Bundler.setup(:client)
+
+require "rest-client"
+require "json"
+require "macaddr"
+
+class ProvisionClient
+	def initialize
+		@mac=Mac.addr
+  end
+
+	def reimage image
+		root_dir = "#{File.dirname(__FILE__)}/.."
+		image_py = "#{root_dir}/image.py"
+		image_pid = "#{root_dir}/image.pid"
+
+		File.open(image_py, 'w') {|f| f.write(image)}
+		system "sudo pkill -TERM -P `cat #{image_pid}`"
+		system "sudo python #{image_py} & echo $! > #{image_pid}" 
+	end
+
+	def hello host
+		json_response = RestClient.post "#{host}/hello", {data:{id:@mac}.to_json}, {:content_type=>:json, :accept=>:json}
+		response = JSON.parse(json_response, symbolize_names:true)
+
+		throw response[:error] if response[:error]!=nil
+
+		if response.has_key? :image
+			reimage response[:image]
+		end
+
+		puts response.inspect
+	end
+end
+
+client = ProvisionClient.new
+
+host=ENV['PROHOST'] || "localhost"
+port=ENV['PROPORT'] || 4567
+client.hello "#{host}:#{port}"

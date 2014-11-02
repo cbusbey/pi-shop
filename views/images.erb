@@ -1,0 +1,19 @@
+<h1>Images</h1>
+
+<table class='table table-condensed'>
+<tr><th>Name</th><th>Description</th><th/><th/></tr>
+
+<%images.each do |name,image| %>
+	<form action='/images/<%=name%>'>
+	<tr>
+		<td><%=name%></td>
+		<td><%=image.description%></td>
+		<td><button class='btn' type='submit'>edit</button></td>
+	</tr>
+	</form>
+<%end%>
+
+</table>
+	
+
+

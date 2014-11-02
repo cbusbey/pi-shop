@@ -1,0 +1,31 @@
+<form class="form-horizontal" action="/devices/<%=device.id%>" method="post">
+	<fieldset>
+		<legend><%=device.id%></legend>
+
+		<div class="control-group">
+			<label class="control-label">Nickname</label> 
+			<div class="controls">
+				<input type="text" value='<%=device.nickname%>' name='nickname'/>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">Image</label>
+			<div class="controls">
+				<select name='image'>
+					<option/>
+					<%images.each do |name,image|%>
+						<option <%="selected" if device.image == name%>><%=name%></option>
+					<%end%>
+				</select>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<div class="controls">
+				<button class='btn btn-success'><%=device.provisioned == true ? "update" : "provision"%></button> 
+				<button class='btn btn-danger'>cancel</button>
+			</div>
+		</div>
+	</fieldset>
+</form>

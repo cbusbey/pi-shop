@@ -1,0 +1,32 @@
+<form action="/images/<%=image.name%>" method="post">
+	<fieldset>
+		<legend><%=image.name%></legend>
+
+		<div>
+		<label>Description</label>
+		<textarea name="description"><%=image.description%></textarea>
+		</div>
+
+		<label>Source</source>
+		<textarea id="code" name="source"><%=image.source%></textarea>
+
+		<div class="control-group">
+			<div class="controls">
+				<button class='btn btn-success'>save</button> 
+				<button class='btn btn-danger'>cancel</button>
+			</div>
+		</div>
+	</fieldset>
+</form>
+
+<script src="/js/codemirror.js"></script>
+<script src="/js/mode/python/python.js"></script>
+
+<script>
+	var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+		mode: {name: "python",
+			singleLineStringErrors: false},
+      lineNumbers: true,
+      indentUnit: 4,
+	});
+</script>

@@ -1,0 +1,40 @@
+<h1>Devices</h1>
+
+<%
+def device_table devices
+	html = "<table class='table table-condensed'>"
+	html << "<tr><th>Device ID</th><th>Nickname</th><th>Last Seen</th><th/></tr>"
+	devices.each do |device|
+		html << "<tr>"
+		html << "<td>#{device.id}</td><td>#{device.nickname}</td><td>#{device.last_seen}</td>"
+		html << "<td>"
+		html << "<form action='/devices/#{device.id}'>"
+		if device.provisioned?
+		html << "<button class='btn' type='submit'>info</button>"
+		else
+		html << "<button class='btn btn-warning' type='submit'>provision</button>"
+		end
+		html << " <a class='btn btn-danger' href='devices/#{device.id}/delete'>delete</button>" 
+		html << "</form>"
+		html << "</td>"
+		html << "</tr>"
+	end
+	html << "</table>"
+
+	html
+end
+%>
+
+<%if provisioned.empty? && unprovisioned.empty?%>
+<p class="text-info">No known devices</p>
+<%end%>
+
+<%unless unprovisioned.empty?%>
+<h3 class="text-warning">Unprovisioned</h3>
+<%=device_table unprovisioned%>
+<%end%>
+
+<%unless provisioned.empty?%>
+<h3>Provisioned</h3>
+<%=device_table provisioned%>
+<%end%>
